@@ -18,7 +18,7 @@ public class Character implements BeanNameAware, ApplicationContextAware, Initia
     private BeanFactory beanFactory;
 
     public Character() {
-        System.out.println("1. Instantiation: A new character has been created.");
+        System.out.println("1. Instantiation - A new character has been created.");
         this.name = "Default";
         this.health = 100;
     }
@@ -29,54 +29,55 @@ public class Character implements BeanNameAware, ApplicationContextAware, Initia
 
     @Override
     public void setBeanName(String name) {
-        System.out.println("2. BeanNameAware: Setting bean name: " + name);
+        System.out.println("2. BeanNameAware - Adicionando nome ao Bean: " + name);
         this.beanName = name;
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        System.out.println("4. ApplicationContextAware: Setting application context.");
-        this.applicationContext = applicationContext;
     }
 
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
         this.beanFactory = beanFactory;
-        System.out.println("3. BeanFactoryAware: Setting bean factory for " + getName());
+        System.out.println("3. BeanFactoryAware - Adicionando o Bean Factory: " + getName());
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        System.out.println("4. ApplicationContextAware - Adicionando o ApplicationContext" + applicationContext);
+        this.applicationContext = applicationContext;
+    }
+
+
+    @PostConstruct
+    public void init() {
+        System.out.println("6. @PostConstruct - " + getName() + " esta se preparando pra iniciar.");
     }
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        System.out.println("7. Initialization: " + getName() + " is undergoing intensive training.");
-    }
-
-    @Override
-    public void destroy() throws Exception {
-        System.out.println("11. DisposableBean: " + getName() + " is saying goodbye and resting.");
-        restAndRecover();
+        System.out.println("7. Initialization - " + getName() + " está iniciando.");
     }
 
     public void customInit() {
-        System.out.println("8. Custom Initialization: Executing custom init for " + getName());
-    }
-
-    public void customDestroy() {
-        System.out.println("13. Custom Destruction: " + getName() + " is bidding farewell and performing a final action.");
-
-    }
-
-    private void restAndRecover() {
-        System.out.println("12. DisposableBean: " + getName() + " is resting and recovering energy.");
-    }
-
-    @PostConstruct
-    public void init() {
-        System.out.println("6. @PostConstruct: " + getName() + " is preparing for action.");
+        System.out.println("8. Custom Initialization - Inicializacao customizada para " + getName());
     }
 
     @PreDestroy
     public void preDestroy() {
-        System.out.println("10. @PreDestroy: " + getName() + " is saying goodbye and preparing to rest.");
+        System.out.println("10. @PreDestroy - " + getName() + " esta se preparando para destruicao.");
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        System.out.println("11. DisposableBean - " + getName() + " está sendo destruida");
+        restAndRecover();
+    }
+
+    private void restAndRecover() {
+        System.out.println("12. DisposableBean - " + getName() + " esta quase la");
+    }
+
+    public void customDestroy() {
+        System.out.println("13. Custom Destruction - " + getName() + " foi pro beleleu.");
+
     }
 
     // Other methods
